@@ -10,24 +10,27 @@ let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 
-let questions = [
-  {
-    question: "What is the Javascript file extension?",
-    choice1: '.js',
-    choice2: '.html',
-    choice3: '.json',
-    choice4: '.css',
-    answer: 1,
-  },
-  {
-    question: "what is 'typeof' used for?",
-    choice1: 'to debug',
-    choice2: 'to return the data type',
-    choice3: 'to send files',
-    choice4: 'to style',
-    answer: 2,
-  },
-];
+let questions = [];
+
+fetch("https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple").then(res =>{
+  console.log(res)
+  return res.json()
+}).then( loadedQuestions =>{
+  console.log(loadedQuestions.results)
+  loadedQuestions.results.map( loadedQuestion =>{
+    const formattedQuestion = {
+      question: loadedQuestion.question
+    }
+    const answerChoices = [...loadedQuestion.incorrect_answers];
+    formattedQuestion.answer = Math.floor(Math.random() * 3) + 1;
+    answerChoices.splice(formattedQuestion.answer -1, 0, loadedQuestion.correct_answer)
+  } )
+  // questions = loadedQuestion;
+  // startGame()
+})
+  .catch(err=> {
+    console.error(err)
+  })
 
 const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 2;
@@ -79,4 +82,3 @@ incrementScore= num =>{
   score += num
   scoreText.innerText = score;
 }
-startGame();
