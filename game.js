@@ -17,7 +17,7 @@ fetch("https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=mul
   return res.json()
 }).then( loadedQuestions =>{
   console.log(loadedQuestions.results)
-  loadedQuestions.results.map( loadedQuestion =>{
+  questions = loadedQuestions.results.map( loadedQuestion =>{
     const formattedQuestion = {
       question: loadedQuestion.question
     }
@@ -27,9 +27,9 @@ fetch("https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=mul
     answerChoices.forEach((choice, index)=>{
       formattedQuestion["choice" + (index + 1)] = choice
     })
+    return formattedQuestion
   } )
-  // questions = loadedQuestion;
-  // startGame()
+  startGame()
 })
   .catch(err=> {
     console.error(err)
